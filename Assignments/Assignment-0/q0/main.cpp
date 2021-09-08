@@ -1,7 +1,8 @@
 #include <iostream>
 using namespace std;
 
-int main(int argc, char *argv[]){
+int main(int argc, char *argv[])
+{
     // Change me
-	cout << "Hello world!" << endl;
+    cout << "Hello " << argv[argc - 1] << "!" << endl;
 }
