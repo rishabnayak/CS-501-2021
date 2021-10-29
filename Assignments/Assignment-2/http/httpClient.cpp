@@ -25,7 +25,7 @@ std::wstring makeHttpRequest(std::wstring fqdn, int port, std::wstring uri, bool
     {
         tlsFlag = 0;
     }
-    WINHTTPAPI HINTERNET httpRequest = WinHttpOpenRequest(httpConnection, L"GET", NULL, uri.c_str(), WINHTTP_NO_REFERER, WINHTTP_DEFAULT_ACCEPT_TYPES, tlsFlag);
+    WINHTTPAPI HINTERNET httpRequest = WinHttpOpenRequest(httpConnection, L"GET", uri.c_str(), NULL, WINHTTP_NO_REFERER, WINHTTP_DEFAULT_ACCEPT_TYPES, tlsFlag);
     DWORD dwflags = SECURITY_FLAG_IGNORE_UNKNOWN_CA | SECURITY_FLAG_IGNORE_CERT_DATE_INVALID | SECURITY_FLAG_IGNORE_CERT_CN_INVALID | SECURITY_FLAG_IGNORE_CERT_WRONG_USAGE;
     BOOL opt = WinHttpSetOption(httpRequest, WINHTTP_OPTION_SECURITY_FLAGS, &dwflags, sizeof(dwflags));
     BOOL req = WinHttpSendRequest(httpRequest, WINHTTP_NO_ADDITIONAL_HEADERS, 0, WINHTTP_NO_REQUEST_DATA, 0, 0, 0);
@@ -81,9 +81,6 @@ std::wstring makeHttpRequest(std::wstring fqdn, int port, std::wstring uri, bool
             delete[] pszOutBuffer;
         }
     } while (dwSize > 0);
-    WinHttpCloseHandle(httpSession);
-    WinHttpCloseHandle(httpConnection);
-    WinHttpCloseHandle(httpRequest);
     return result;
 }
 

@@ -22,11 +22,19 @@ std::wstring b64Encode(std::vector<uint8_t> binaryData)
 
     //change me
     DWORD buffLength = 0;
-    wchar_t *encBuff;
-    CryptBinaryToStringW(rawData, binaryData.size(), CRYPT_STRING_BASE64, NULL, &buffLength);
-    returnBuff.reserve(buffLength);
-    CryptBinaryToStringW(rawData, binaryData.size(), CRYPT_STRING_BASE64, encBuff, &buffLength);
-    returnBuff.append(encBuff);
+    BOOL bRet;
+
+    bRet = CryptBinaryToStringW(rawData, binaryData.size(), CRYPT_STRING_BASE64, NULL, &buffLength);
+    if (bRet)
+    {
+        returnBuff.resize(buffLength);
+        CryptBinaryToStringW(rawData, binaryData.size(), CRYPT_STRING_BASE64, &returnBuff[0], &buffLength);
+    }
+    else
+    {
+        printf("%u\n", GetLastError());
+    }
+
     return returnBuff;
 }
 
@@ -35,13 +43,16 @@ std::vector<uint8_t> b64Decode(std::wstring myString)
     // as before you should make two calls to ::CryptStringToBinaryW
     DWORD binaryBuffLength = 0;
     std::vector<uint8_t> binaryData;
-    BYTE *decBuff;
-    CryptStringToBinaryW(myString.c_str(), myString.length(), CRYPT_STRING_BASE64, NULL, &binaryBuffLength, NULL, NULL);
-    binaryData.resize(binaryBuffLength);
-    CryptStringToBinaryW(myString.c_str(), myString.length(), CRYPT_STRING_BASE64, decBuff, &binaryBuffLength, NULL, NULL);
-    for (int i = 0; i < binaryData.size(); i++)
+    BOOL bRet;
+    bRet = CryptStringToBinaryW(myString.c_str(), myString.length(), CRYPT_STRING_BASE64, NULL, &binaryBuffLength, NULL, NULL);
+    if (bRet)
     {
-        binaryData[i] = decBuff[i];
+        binaryData.resize(binaryBuffLength);
+        CryptStringToBinaryW(myString.c_str(), myString.length(), CRYPT_STRING_BASE64, &binaryData[0], &binaryBuffLength, NULL, NULL);
+    }
+    else
+    {
+        printf("%u\n", GetLastError());
     }
     return binaryData;
 }
