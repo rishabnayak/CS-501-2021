@@ -1,3 +1,6 @@
+#define UNICODE
+#define _UNICODE
+
 #include <windows.h>
 #include <wincrypt.h>
 #include <tchar.h>
@@ -5,7 +8,7 @@
 #include <vector>
 #include <cstdint>
 
-//hint: use CRYPT_STRING_BASE64
+// hint: use CRYPT_STRING_BASE64
 
 std::wstring b64Encode(std::vector<uint8_t> binaryData)
 {
@@ -20,7 +23,7 @@ std::wstring b64Encode(std::vector<uint8_t> binaryData)
     // as it is allocated in contiguous chunks of memory
     // you can also easily convert it to raw data via returnBuff.data()
 
-    //change me
+    // change me
     DWORD buffLength = 0;
     BOOL bRet;
 
@@ -57,13 +60,14 @@ std::vector<uint8_t> b64Decode(std::wstring myString)
     return binaryData;
 }
 
-int wmain(int argc, wchar_t *argv[])
+int _tmain(int argc, TCHAR **argv)
 {
     if (argc != 3)
     {
         std::wcout << L"Incorrect number of arguments" << std::endl;
         return 0;
     }
+    std::wcout << argv[1] << std::endl;
     std::wstring action = std::wstring(argv[1]);
 
     std::wstring dataString = std::wstring(argv[2]);
