@@ -11,7 +11,7 @@ endif
 all: aes_gcm
 
 aes_gcm:
-	$(CXX) aes_test.cpp aes_gcm.cpp  $(LDFLAGS)   -o aes.exe 
+	$(CXX) aes_test.cpp aes_gcm.cpp  $(LDFLAGS) -o aes.exe 
 
 clean:
 	$(RM) *.exe
